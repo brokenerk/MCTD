@@ -1,15 +1,92 @@
 <!doctype html>
 <html>
-	<title>Inicio</title>
-   <head>
-      <meta http-equiv = "Content-Type" content="text/html; charset=utf-8"/> 
+	<head>
+
+      <meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+      <title>Números Aleatorios</title>
+      <meta name='viewport' content='width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no'/>
+      <meta name="description" content="">
+      <meta name="keywords" content="">
+      <link href="{{ url_for('static', filename='materialize/css/materialize.min.css') }}" rel="stylesheet">
+      <link href="{{ url_for('static', filename='jscript/validetta/validetta.min.css') }}" rel="stylesheet">
+      <link href="{{ url_for('static', filename='jscript/confirm330/css/jquery-confirm.css') }}" rel="stylesheet">
+      <link href="{{ url_for('static', filename='css/general.css') }}" rel="stylesheet">
+      <link href="{{ url_for('static', filename='fontAwesome/css/all.min.css') }}" rel="stylesheet">
+      <script src="{{ url_for('static', filename='jscript/jquery-3.3.1.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='materialize/js/materialize.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='jscript/validetta/validetta.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='jscript/validetta/validettaLang-es-ES.js') }}"></script>
+      <script src="{{ url_for('static', filename='jscript/confirm330/js/jquery-confirm.js') }}"></script>
+      <script src="{{ url_for('static', filename='fontAwesome/js/all.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='jscript/form.js') }}"></script>
+
    </head>
+
    <body>
-      <form action = "http://localhost:5000/mctd_resultados" method = "POST">
-         <p>Tam Poblacion <input type = "text" name = "tamPoblacion" /></p>
-         <p>Num Poblaciones <input type = "text" name = "numPoblaciones" /></p>
-         <p>Funcion Objetivo <input type = "text" name = "funcionObjetivo" /></p>
-         <p><input type = "submit" value = "Calcular">
-      </form>
+      <header>
+         <div class="container">
+            <img src="{{ url_for('static', filename='imgs/header20191.png') }}" class="responsive-img">
+        </div>
+      </header>
+      <main class = "valign-wrapper">
+         <div class = "container">
+            <div class = "row">
+               <form action = "http://localhost:5000/mctd_resultados" method = "POST" id = "formulario" autocomplete="off">
+                  <div class = "col s4 m2 offset-m3 input-field">
+                     <label for = "tamPoblacion">Tama&ntilde;o Población</label>
+                     <input type = "text" id = "tamPoblacion" name = "tamPoblacion" data-validetta="required,number"/></p>
+                  </div>
+                  <div class = "col s4 m2 input-field">
+                     <label for = "numPoblaciones"># Poblaciones</label>
+                     <input type = "text" id = "numPoblaciones" name = "numPoblaciones" data-validetta="required,number"/></p>
+                  </div>
+
+                  <div class = "col s4 m2 input-field">
+                     <label for = "numRestricciones"># Restricciones</label>
+                     <input type = "text" id = "numRestricciones" name = "numRestricciones" data-validetta="required,number"/></p>
+                  </div>
+
+                  <div class = "col s8 m4 offset-m3 input-field">
+                     <label for = "funcionObjetivo">Función Objetivo</label>
+                     <input type = "text" id = "funcionObjetivo" name = "funcionObjetivo" data-validetta="required"/></p>
+                  </div>
+
+                  <div class = "col s4 m3 input-field">
+                     <label>
+                        <input type="checkbox" class="filled-in" checked="checked" id = "negatividad" />
+                        <span>No Negatividad</span>
+                     </label>
+                  </div>
+
+                  <div class = "col s12 m6 offset-m3">
+                     <label for = "funcionObjetivo" class="grey-text text-darken-4">Si la casilla de no negatividad esta marcada, no contemplar estas al ingresar las restricciones.</label>
+                  </div>
+
+                  <div class="col s6 m3 offset-m3 input-field">
+                    <button type="button" id="btnRestricciones" name = "btnRestricciones" class="waves-effect waves-light btn-small modal-trigger blue" style="width: 100%">A&ntilde;adir Restricciones</button>
+                  </div>
+
+                  <div class="col s6 m3 input-field">
+                    <button type="button" id="btnLimpiar" name = "btnLimpiar" class="waves-effect waves-light btn-small modal-trigger red" style="width: 100%">Limpiar</button>
+                  </div>
+
+                  
+               </form>
+            </div>
+         </div>
+      </main>
+
+      <footer class = "page-footer teal">
+        <div class = "footer-copyright">
+            <div class = "container">
+
+               © 2019 Copyright / MCTD 2019 3CV8
+               <label for = "a1" class="grey-text text-lighten-4 right">Ramos Diaz Enrique</label>
+               <br>
+               <label for = "a2" class="grey-text text-lighten-4 right">Lara Cazares Jaime Arturo</label>
+            </div>
+        </div>
+    </footer>
    </body>
 </html>
