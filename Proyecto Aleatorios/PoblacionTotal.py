@@ -60,7 +60,7 @@ class PoblacionTotal:
 			bandera = True
 
 			for x in range(0, self.totalPoblacion):
-				poblador1 = Poblador(self.restricciones, self.z, self.limitesInf, self.limitesSup)
+				poblador1 = Poblador(self.restricciones, self.z, self.limitesInf, self.limitesSup, x + 1)
 				#print(poblador1.getZ())
 
 				if(poblador1.getZ() != "Incumplimiento de restricciones" and bandera):

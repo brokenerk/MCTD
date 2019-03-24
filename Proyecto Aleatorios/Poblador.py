@@ -10,12 +10,10 @@ class Poblador:
 	constantes = []
 	z = 0
 
-	def __init__(self, restricciones, z, limitesSup, limitesInf):
+	def __init__(self, restricciones, z, limitesSup, limitesInf, iteracion):
 		self.valorRestricciones = False
-		self.limitesSup = limitesSup
-		self.limitesInf = limitesInf
 		self.ceros = []
-		alea = Aleatorio(restricciones, limitesSup, limitesInf)
+		alea = Aleatorio(restricciones, limitesSup, limitesInf, iteracion)
 		self.aleatorios = alea.getAleatorio()
 		#print("Aleatorios en pesona")
 		#print(self.aleatorios)

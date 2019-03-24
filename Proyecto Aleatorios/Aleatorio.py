@@ -1,6 +1,6 @@
 #!python3
 import random #Libreria randoms
-import os #Libreria llamadas al sistema (procesos)
+import os #Libreria llamadas al sistema
 import sys
 import traceback #Libreria excepciones
 
@@ -9,21 +9,14 @@ class Aleatorio:
 	limitesInf = []
 	restricciones = []
 
-	def __init__(self, restricciones, limitesSup, limitesInf):
+	def __init__(self, restricciones, limitesSup, limitesInf, iteracion):
 		self.restricciones = restricciones
 		self.limitesSup = limitesSup
 		self.limitesInf = limitesInf
-		self.id_proc = 0
-		self.pid = 0
+		#Random criptografico segun la iteracion
+		self.semilla = int.from_bytes(os.urandom(iteracion), sys.byteorder) 
 		#Semilla Aleatoria
-		try:
-			self.id_proc = os.fork() #Nuevo proceso
-			if(self.id_proc == 0):
-				self.pid = os.getpid() #PID del proceso actual
-				random.seed(self.pid) #Semilla aleatoria
-				os._exit(1)
-		except:
-			print(traceback.format_exc())
+		random.seed(self.semilla) 
 
 	def getAleatorio(self):
 		aleatorio = []
