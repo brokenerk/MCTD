@@ -31,12 +31,10 @@ $(document).ready(function(){
         /*Leemos el numeros de restricciones*/
         noRestricciones = $("#numRestricciones").val(); 
 
-        nuevoDiv = "<div class = 'row' id = 'restric'></div>";
-       
-        $("#formulario").append(nuevoDiv);
-        
         /*Si no es vacio, creamos los inputs para las restricciones*/
         if(noRestricciones != ""){
+            nuevoDiv = "<div class = 'row' id = 'restric'></div>";
+             $("#formulario").append(nuevoDiv);
             for(var i = 0; i < noRestricciones; i++){
                 var nuevoInput = 
                     "<div class = 'col s12 m6 offset-m3 input-field'>" +
