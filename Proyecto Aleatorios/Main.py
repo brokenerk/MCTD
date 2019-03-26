@@ -2,6 +2,7 @@
 #Compilar y ejecutar: python3 -B Main.py
 from PoblacionTotal import PoblacionTotal
 from flask import Flask, render_template, request
+import json
 
 """
 def main():
@@ -29,13 +30,20 @@ def resultado():
 	tamPoblacion = int(request.form["tamPoblacion"])
 	restricciones = request.form.getlist("restriccion")
 	numeroPoblaciones = int(request.form["numPoblaciones"])
+	noNegatividad = "noNegatividad" in request.form
 	z = request.form["funcionObjetivo"]
 
 	p = PoblacionTotal(tamPoblacion, numeroPoblaciones, restricciones, z)
-	p.definirLimites()
-	p.iniciar()
-	return "Ok!"
-  	#return render_template("results.html", tamPoblacion = tamPoblacion, numPoblaciones = numPoblaciones, funcionObjetivo = funcionObjetivo)
+	p.definirLimites(noNegatividad)
+	p.calcular()
+
+	#Obtenemos info por medio de JSON para crear vista
+	limitesJSON = p.getLimitesJSON()
+	resultadosPoblacionJSON = p.getResultadosPoblacionJSON()
+	mejoresResultadosJSON = p.getMejoresResultadosJSON()
+
+	#Enviamos los JSON al html apoyandonos de javascript
+	return render_template("results.html", limites = limitesJSON, resultadosPoblacion = resultadosPoblacionJSON, mejoresResultados = mejoresResultadosJSON)
 
 if __name__ == "__main__":
-	app.run()
+	app.run(debug=True)

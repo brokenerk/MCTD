@@ -9,12 +9,12 @@ class Aleatorio:
 	limitesInf = []
 	restricciones = []
 
-	def __init__(self, restricciones, limitesSup, limitesInf, iteracion):
+	def __init__(self, restricciones, limitesSup, limitesInf):
 		self.restricciones = restricciones
 		self.limitesSup = limitesSup
 		self.limitesInf = limitesInf
-		#Random criptografico segun la iteracion
-		self.semilla = int.from_bytes(os.urandom(iteracion), sys.byteorder) 
+		#Random criptografico
+		self.semilla = int.from_bytes(os.urandom(2000), sys.byteorder) 
 		#Semilla Aleatoria
 		random.seed(self.semilla) 
 

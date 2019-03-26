@@ -2,11 +2,42 @@
 <html>
    <title>Resultados</title>
    <head>
-      <meta http-equiv = "Content-Type" content = "text/html; charset=utf-8"/> 
+      <meta http-equiv = "Content-Type" content = "text/html; charset=utf-8"/>
+      <script>
+      	//Obtenemos por medio de JSON los resultados desde python
+      	var lims = JSON.parse(({{ limites|tojson }}));
+      	var totalVariables = lims.totalVariables;
+      	var limitesInf = lims.limitesInf;
+      	var limitesSup = lims.limitesSup;
+
+      	console.log("Total Variables:" + totalVariables);
+      	console.log("LimitesSup:" + limitesSup);
+      	console.log("LimitesInf:" + limitesInf);
+
+      	var resultsPoblacion = JSON.parse(({{ resultadosPoblacion|tojson }}));
+      	var zMaxP = resultsPoblacion.zMax;
+      	var puntosMaxP = resultsPoblacion.puntosMax;
+      	var zMinP = resultsPoblacion.zMin;
+      	var puntosMinP = resultsPoblacion.puntosMin;
+
+      	console.log("ZMax:" + zMaxP);
+      	console.log(puntosMaxP);
+      	console.log("ZMin:" + zMinP);
+      	console.log(puntosMinP);
+
+      	var mejoresResults = JSON.parse(({{ mejoresResultados|tojson|safe }}));
+      	var zMaxG = mejoresResults.zMaxG;
+      	var puntosMaxG = mejoresResults.puntosMaxG;
+      	var zMinG = mejoresResults.zMinG;
+      	var puntosMinG = mejoresResults.puntosMinG;
+
+      	console.log("Mejor ZMax:" + zMaxG);
+      	console.log(puntosMaxG);
+      	console.log("Mejor ZMin:" + zMinG);
+      	console.log(puntosMinG);
+
+      </script>
    </head>
    <body>
-      <h1>Tamaño de poblacion: {{ tamPoblacion }}</h1> <br>
-      <h1>Numero de poblaciones: {{ numPoblaciones }}</h1> <br>
-      <h1>Funcion Objetivo: {{ funcionObjetivo }}</h1> <br>
    </body>
 </html>

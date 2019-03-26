@@ -1,15 +1,20 @@
 #!python3
 from Poblador import Poblador
+import json
 
 class PoblacionTotal:
-	puntosMax = []
-	puntosMin = []
 	limitesSup = []
 	limitesInf = []
-	zMax = 0.0
-	zMin = 0.0
 	restricciones = []
 	totalVariables = 0
+	zMaxG = 0.0
+	zMinG = 1000000000000000000
+	puntosMaxG = []
+	puntosMinG = []
+	zMaxP = []
+	zMinP = []
+	puntosMaxP = []
+	puntosMinP = []
 
 	def __init__(self, totalPoblacion, numPoblaciones, restricciones, z):
 		self.totalPoblacion = totalPoblacion
@@ -17,7 +22,7 @@ class PoblacionTotal:
 		self.restricciones = restricciones
 		self.z = z
 
-	def definirLimites(self):
+	def definirLimites(self, noNegatividad):
 		constantes = []
 
 		for restriccion in self.restricciones:
@@ -42,52 +47,117 @@ class PoblacionTotal:
 				if(float(constantes[i]) != 0.0):
 					aux2 = float(constantes[len(constantes) - 1]) / float(constantes[i])
 
+				if(noNegatividad and aux2 < 0.0):
+					aux2 = 0.0
+
 				if(self.limitesSup[i] < aux2):
 					self.limitesSup[i] = aux2
 
 				if(self.limitesInf[i] > aux2):
 					self.limitesInf[i] = aux2
 
-		print("totalVariables = " + str(self.totalVariables))
+		"""print("totalVariables = " + str(self.totalVariables))
 		print("limitesSup:")
 		print(self.limitesSup)
 		print("limitesInf:")
-		print(self.limitesInf)
+		print(self.limitesInf)"""
 
-	def iniciar(self):
-
+	def calcular(self):
+		self.zMaxP.clear()
+		self.puntosMaxP.clear()
+		self.zMinP.clear()
+		self.puntosMinP.clear()
+		self.puntosMaxG.clear()
+		self.puntosMinG.clear()
+		
 		for i in range(0, self.numPoblaciones):
 			bandera = True
+			puntosMax = []
+			puntosMin = []
+			zMax = 0.0
+			zMin = 0.0
 
 			for x in range(0, self.totalPoblacion):
-				poblador1 = Poblador(self.restricciones, self.z, self.limitesInf, self.limitesSup, x + 1)
+				poblador1 = Poblador(self.restricciones, self.z, self.limitesInf, self.limitesSup)
 				#print(poblador1.getZ())
 
 				if(poblador1.getZ() != "Incumplimiento de restricciones" and bandera):
-					self.zMin = float(poblador1.getZ())
+					zMin = float(poblador1.getZ())
 					bandera = False
 
-				if(poblador1.getZ() != "Incumplimiento de restricciones" and float(poblador1.getZ()) > self.zMax):
-					self.zMax = float(poblador1.getZ())
-					self.puntosMax = poblador1.getAleatorios()
+				if(poblador1.getZ() != "Incumplimiento de restricciones" and float(poblador1.getZ()) > zMax):
+					zMax = float(poblador1.getZ())
+					puntosMax = poblador1.getAleatorios()
 
-				if(poblador1.getZ() != "Incumplimiento de restricciones" and float(poblador1.getZ()) < self.zMin):
-					self.zMin = float(poblador1.getZ())
-					self.puntosMin = poblador1.getAleatorios()
+				if(poblador1.getZ() != "Incumplimiento de restricciones" and float(poblador1.getZ()) < zMin):
+					zMin = float(poblador1.getZ())
+					puntosMin = poblador1.getAleatorios()
 
-				if(len(self.puntosMax) == 0):
-					self.puntosMax = poblador1.getCeros()
+				if(len(puntosMax) == 0):
+					puntosMax = poblador1.getCeros()
 
-				if(len(self.puntosMin) == 0):
-					self.puntosMin = poblador1.getCeros()
+				if(len(puntosMin) == 0):
+					puntosMin = poblador1.getCeros()
 				#del poblador1
-			print ("")
+
+			if(zMax > self.zMaxG):
+				self.zMaxG = zMax
+				self.puntosMaxG = puntosMax
+
+			if(zMin < self.zMinG):
+				self.zMinG = zMin
+				self.puntosMinG = puntosMin
+
+			self.zMaxP.append(zMax)
+			self.zMinP.append(zMin)
+			self.puntosMaxP.append(puntosMax)
+			self.puntosMinP.append(puntosMin)
+			"""print("")
 			print("------------------------------------------------ Iteracion: " + str(i + 1))
 			print("zMax:")
-			print(self.zMax)
+			print(zMax)
 			print("Max:")
-			print(self.puntosMax)
+			print(puntosMax)
 			print("zMin:")
-			print(self.zMin)
+			print(zMin)
 			print("Min:")
-			print(self.puntosMin)
+			print(puntosMin)
+
+		print("")
+		print("")
+		print("---------------- Mejores resultados encontrados:")
+		print("Mejor zMax:")
+		print(self.zMaxG)
+		print("Mejor Max:")
+		print(self.puntosMaxG)
+		print("Mejor zMin:")
+		print(self.zMinG)
+		print("Mejor Min:")
+		print(self.puntosMinG)"""
+
+	def getLimitesJSON(self):
+		limJSON = {
+					"totalVariables": str(self.totalVariables), 
+					"limitesSup": self.limitesSup, 
+					"limitesInf": self.limitesInf
+		}
+
+		return json.dumps(limJSON)
+
+	def getResultadosPoblacionJSON(self):
+		resultadosPoblacionJSON = {
+									"zMax": self.zMaxP,
+									"puntosMax": self.puntosMaxP,
+									"zMin": self.zMinP,
+									"puntosMin": self.puntosMinP
+		}
+		return json.dumps(resultadosPoblacionJSON)
+
+	def getMejoresResultadosJSON(self):
+		mejoresResultadosJSON = {
+							"zMaxG": self.zMaxG,
+							"puntosMaxG": self.puntosMaxG,
+							"zMinG": self.zMinG,
+							"puntosMinG": self.puntosMinG
+		}
+		return json.dumps(mejoresResultadosJSON)
