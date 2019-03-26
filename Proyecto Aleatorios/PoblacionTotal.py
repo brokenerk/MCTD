@@ -24,6 +24,8 @@ class PoblacionTotal:
 
 	def definirLimites(self, noNegatividad):
 		constantes = []
+		self.limitesSup.clear()
+		self.limitesInf.clear()
 
 		for restriccion in self.restricciones:
 			aux = ""
@@ -76,6 +78,7 @@ class PoblacionTotal:
 			puntosMin = []
 			zMax = 0.0
 			zMin = 0.0
+			zAux = 0.0
 
 			for x in range(0, self.totalPoblacion):
 				poblador1 = Poblador(self.restricciones, self.z, self.limitesInf, self.limitesSup)
