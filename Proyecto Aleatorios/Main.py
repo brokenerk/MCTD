@@ -27,11 +27,18 @@ def crear():
 @app.route("/mctd_resultados", methods = ["POST"])
 def resultado():
 	restricciones = []
+	tamPoblacion = 0
+	numPoblaciones = 0
+	noNegatividad = True
+	z = ""
+
 	tamPoblacion = int(request.form["tamPoblacion"])
 	restricciones = request.form.getlist("restriccion")
 	numeroPoblaciones = int(request.form["numPoblaciones"])
 	noNegatividad = "noNegatividad" in request.form
 	z = request.form["funcionObjetivo"]
+	#print(z)
+	#print(restricciones)
 
 	p = PoblacionTotal(tamPoblacion, numeroPoblaciones, restricciones, z)
 	p.definirLimites(noNegatividad)

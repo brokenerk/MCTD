@@ -8,11 +8,12 @@ class Poblador:
 	aleatorios = []
 	zExpresion = ""
 	constantes = []
-	z = 0
+	z = 0.0
 
 	def __init__(self, restricciones, z, limitesSup, limitesInf):
 		self.valorRestricciones = False
-		self.ceros = []
+		self.ceros.clear()
+		self.aleatorios.clear()
 		alea = Aleatorio(restricciones, limitesSup, limitesInf)
 		self.aleatorios = alea.getAleatorio()
 		#print("Aleatorios en pesona")
@@ -21,7 +22,7 @@ class Poblador:
 			self.ceros.append(0)
 
 		self.zExpresion = z
-		self.restricciones = []
+		self.restricciones.clear()
 
 		for rest in restricciones:
 			self.restricciones.append(Restriccion(rest, self.aleatorios))
@@ -42,6 +43,8 @@ class Poblador:
 
 	def calcularZ(self):
 		aux = ""
+		self.z = 0.0
+		self.constantes.clear()
 
 		for letra in self.zExpresion:
 			if(letra == "." or letra.isdigit() or letra == "-"):
@@ -52,6 +55,7 @@ class Poblador:
 
 		for num, ale in zip(self.constantes, self.aleatorios):
 			self.z = self.z + float(num) * float(ale)
+		#print(self.z)
 		
 	def getZ(self):
 		if(self.valorRestricciones):

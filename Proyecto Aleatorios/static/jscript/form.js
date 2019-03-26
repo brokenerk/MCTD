@@ -1,7 +1,17 @@
 /*Para ir creando dinamicamente los inputs de los parametros*/
 $(document).ready(function(){
-    var noRestricciones = 0;
-    $("#gifLoad").hide();
+    $(window).bind("pageshow", function() {
+        $("#numRestricciones").val("");
+        $("#tamPoblacion").val("");
+        $("#numPoblaciones").val("");
+        $("#funcionObjetivo").val("");
+        $("#restric").remove();
+        $("#negatividad").prop("checked", true);
+        var noRestricciones = 0;
+        $("#gifLoad").hide();
+        $("#btnRestricciones").attr("disabled", false); 
+    });
+    
 
     $("#formulario").validetta({
         bubblePosition: "bottom",
@@ -30,9 +40,11 @@ $(document).ready(function(){
     $("#btnRestricciones").click(function(){
         /*Leemos el numeros de restricciones*/
         noRestricciones = $("#numRestricciones").val(); 
+        
 
         /*Si no es vacio, creamos los inputs para las restricciones*/
         if(noRestricciones != ""){
+            $("#btnRestricciones").attr("disabled", true); 
             nuevoDiv = "<div class = 'row' id = 'restric'></div>";
              $("#formulario").append(nuevoDiv);
             for(var i = 0; i < noRestricciones; i++){
@@ -63,5 +75,6 @@ $(document).ready(function(){
         $("#funcionObjetivo").val("");
         $("#restric").remove();
         $("#negatividad").prop("checked", true);
+        $("#btnRestricciones").attr("disabled", false); 
     });
 });
