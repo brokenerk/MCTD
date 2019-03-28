@@ -1,13 +1,14 @@
 /*Para ir creando dinamicamente los inputs de los parametros*/
 $(document).ready(function(){
+	var noRestricciones;
     function limpiar(){
         $("#numRestricciones").val("");
         $("#tamPoblacion").val("");
         $("#numPoblaciones").val("");
         $("#funcionObjetivo").val("");
         $("#restric").remove();
-        $("#negatividad").prop("checked", true);
-        var noRestricciones = 0;
+        $("#noNegatividad").prop("checked", true);
+        noRestricciones = 0;
         $("#btnRestricciones").attr("disabled", false); 
     }
     limpiar();
