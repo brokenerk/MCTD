@@ -1,6 +1,6 @@
 /*Para ir creando dinamicamente los inputs de los parametros*/
 $(document).ready(function(){
-    $(window).bind("pageshow", function() {
+    function limpiar(){
         $("#numRestricciones").val("");
         $("#tamPoblacion").val("");
         $("#numPoblaciones").val("");
@@ -8,11 +8,13 @@ $(document).ready(function(){
         $("#restric").remove();
         $("#negatividad").prop("checked", true);
         var noRestricciones = 0;
-        $("#gifLoad").hide();
         $("#btnRestricciones").attr("disabled", false); 
+    }
+    limpiar();
+    $(window).bind("pageshow", function() {
+        limpiar();
     });
     
-
     $("#formulario").validetta({
         bubblePosition: "bottom",
         bubbleGapTop: 10,
@@ -34,6 +36,15 @@ $(document).ready(function(){
                     },
                 }
             });
+        },
+        onValid:function(e){
+            //e.preventDefault();
+            $.dialog({
+                icon: "fa fa-spinner fa-spin",
+                title: "Calculando... Espere por favor.",
+                content: "El sistema está calculando aleatorios que resuelvan el problema de manera óptima. Dénos un momento y acabaremos..",
+                type: "green"
+            })
         }
     });
     
@@ -69,12 +80,6 @@ $(document).ready(function(){
     });
 
     $("#btnLimpiar").click(function(){
-        $("#numRestricciones").val("");
-        $("#tamPoblacion").val("");
-        $("#numPoblaciones").val("");
-        $("#funcionObjetivo").val("");
-        $("#restric").remove();
-        $("#negatividad").prop("checked", true);
-        $("#btnRestricciones").attr("disabled", false); 
+        limpiar();
     });
 });

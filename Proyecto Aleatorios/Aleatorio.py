@@ -22,5 +22,4 @@ class Aleatorio:
 		aleatorio = []
 		for limMax, limMin in zip(self.limitesSup, self.limitesInf):
 			aleatorio.append(random.uniform(limMin, limMax))
-			
 		return aleatorio

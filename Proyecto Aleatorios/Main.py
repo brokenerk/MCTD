@@ -4,20 +4,6 @@ from PoblacionTotal import PoblacionTotal
 from flask import Flask, render_template, request
 import json
 
-"""
-def main():
-	tamPoblacion = 2000
-	numeroPoblaciones = 5
-
-	restricciones = ["1A-1B>=0", "1A-1B>=10", "1A-1B<=30", "0A+1B>=10", "0A+1B<=30", "0A+1B>=0", "1A+0B>=0"]
-	z = "0.4A+0.2B=Z"
-
-	p = PoblacionTotal(tamPoblacion, numeroPoblaciones, restricciones, z)
-	p.definirLimites()
-	p.iniciar()
-
-main()"""
-
 app = Flask(__name__)
 
 @app.route('/')
@@ -37,8 +23,14 @@ def resultado():
 	numeroPoblaciones = int(request.form["numPoblaciones"])
 	noNegatividad = "noNegatividad" in request.form
 	z = request.form["funcionObjetivo"]
-	#print(z)
-	#print(restricciones)
+
+	pplJSON = {
+				"tamPoblacion": str(tamPoblacion),
+				"numPoblaciones": str(numeroPoblaciones),
+				"restricciones": restricciones,
+				"noNegatividad": str(noNegatividad),
+				"z": z
+	};
 
 	p = PoblacionTotal(tamPoblacion, numeroPoblaciones, restricciones, z)
 	p.definirLimites(noNegatividad)
@@ -50,7 +42,7 @@ def resultado():
 	mejoresResultadosJSON = p.getMejoresResultadosJSON()
 
 	#Enviamos los JSON al html apoyandonos de javascript
-	return render_template("results.html", limites = limitesJSON, resultadosPoblacion = resultadosPoblacionJSON, mejoresResultados = mejoresResultadosJSON)
+	return render_template("results.html", ppl = json.dumps(pplJSON), limites = limitesJSON, resultadosPoblacion = resultadosPoblacionJSON, mejoresResultados = mejoresResultadosJSON)
 
 if __name__ == "__main__":
 	app.run(debug=True)

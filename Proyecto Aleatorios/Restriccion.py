@@ -14,12 +14,10 @@ class Restriccion:
 	def separar(self):
 		aux = ""
 		i = 0
-		#print("Len="+str(len(self.constantes)))
 		for letra in self.expresion:
 			if(letra == "." or letra.isdigit() or letra == "-"):
 				aux = aux + letra
 			elif(aux != ""):
-				#print("i="+str(i))
 				self.constantes[i] = aux
 				i = i + 1
 				aux = ""

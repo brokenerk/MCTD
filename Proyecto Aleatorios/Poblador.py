@@ -16,8 +16,6 @@ class Poblador:
 		self.aleatorios.clear()
 		alea = Aleatorio(restricciones, limitesSup, limitesInf)
 		self.aleatorios = alea.getAleatorio()
-		#print("Aleatorios en pesona")
-		#print(self.aleatorios)
 		for x in range(0, len(self.aleatorios)):
 			self.ceros.append(0)
 
@@ -37,7 +35,6 @@ class Poblador:
 
 		for rest in self.restricciones:
 			aux = aux * rest.evaluar()
-		#print("aux="+str(aux))
 		if(aux == 1):
 			self.valorRestricciones = True
 
@@ -55,7 +52,6 @@ class Poblador:
 
 		for num, ale in zip(self.constantes, self.aleatorios):
 			self.z = self.z + float(num) * float(ale)
-		#print(self.z)
 		
 	def getZ(self):
 		if(self.valorRestricciones):
