@@ -4,16 +4,14 @@ from Aleatorio import Aleatorio
 
 class Poblador:
 	ceros = []
-	restricciones = []#lista de restricciones
-	aleatorios = []#lista de aleatoros
-	zExpresion = ""#Expresion algebraica de la funcikon objetivo
-	constantes = []#lista de constantes
-	z = 0.0 #valor de Z
+	restricciones = [] #Lista de restricciones
+	aleatorios = [] #Lista de aleatorios
+	zExpresion = "" #Expresion algebraica de la funcion objetivo
+	constantes = [] #Lista de constantes
+	z = 0.0 #Valor de Z
 
 	def __init__(self, restricciones, z, limitesSup, limitesInf):
-		"""
-		Inicalizacion de las variables
-		"""
+		#Inicializacion de las variables
 		self.valorRestricciones = False
 		self.ceros.clear()
 		self.aleatorios.clear()
@@ -30,7 +28,8 @@ class Poblador:
 		self.evaluar()
 		self.calcularZ()
 
-	def getAleatorios(self):#Retorna los aleatorios asignados al poblador
+	#Retorna los aleatorios asignados al poblador
+	def getAleatorios(self):
 		return self.aleatorios
 
 	def evaluar(self):
@@ -39,25 +38,31 @@ class Poblador:
 
 		for rest in self.restricciones:
 			aux = aux * rest.evaluar()
-		if(aux == 1):#En caso de ser cero se debe a que alguna restriccion no se cumpio
+			
+		#En caso de ser cero se debe a que alguna restriccion no se cumplio
+		if(aux == 1):
 			self.valorRestricciones = True
 
-	def calcularZ(self):#se obtiene el valor de Z
+	#Se obtiene el valor de Z
+	def calcularZ(self):
 		aux = ""
 		self.z = 0.0
 		self.constantes.clear()
 
-		for letra in self.zExpresion:#Se rescatan las constantes de la expresion
+		#Se rescatan las constantes de la expresion
+		for letra in self.zExpresion:
 			if(letra == "." or letra.isdigit() or letra == "-"):
 				aux = aux + letra
 			elif(aux != ""):
 				self.constantes.append(aux)
 				aux = ""
 
-		for num, ale in zip(self.constantes, self.aleatorios):#se multiplican las constantes y los aleatorios para encontrar Z
+		#Se multiplican las constantes y los aleatorios para encontrar Z
+		for num, ale in zip(self.constantes, self.aleatorios):
 			self.z = self.z + float(num) * float(ale)
-		
-	def getZ(self):#Retorna Z
+	
+	#Retorna Z
+	def getZ(self):
 		if(self.valorRestricciones):
 			return self.z
 		else:

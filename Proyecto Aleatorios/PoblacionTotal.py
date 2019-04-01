@@ -1,51 +1,59 @@
 #!python3
 from Poblador import Poblador
-import json
+import json #Libreria para usar JSON
 
 class PoblacionTotal:
-	limitesSup = []#lista de limites superiores
-	limitesInf = []#lista de limites inferiores
-	restricciones = []#lista de las restricciones
-	totalVariables = 0#numero total de restricciones
-	zMaxG = 0.0
-	zMinG = 1000000000000000000
-	puntosMaxG = []
-	puntosMinG = []
-	zMaxP = []#valores maximos de Z
-	zMinP = []#valores minimos de Z
-	puntosMaxP = [] #puntos de soluccion maxima
-	puntosMinP = [] #puntos de solucion minimos
+	limitesSup = [] #Lista de limites superiores
+	limitesInf = [] #Lista de limites inferiores
+	restricciones = [] #Lista de las restricciones
+	totalVariables = 0 #Numero total de restricciones
+	zMaxG = 0.0 #Mejor valor maximo de Z hallado
+	zMinG = 1000000000000000000 #Mejor valor minimo de Z hallado
+	puntosMaxG = [] #Puntos de la mejor solucion maxima hallada
+	puntosMinG = [] #Puntos de la mejor solucion minima hallada
+	zMaxP = [] #Valores maximos de Z
+	zMinP = [] #Valores minimos de Z
+	puntosMaxP = [] # Puntos de solucciones maxima
+	puntosMinP = [] #Puntos de soluciones minimos
 
 	def __init__(self, totalPoblacion, numPoblaciones, restricciones, z):
-		#inicializacion de varaibles
+		#Inicializacion de variables
 		self.totalPoblacion = totalPoblacion
 		self.numPoblaciones = numPoblaciones
 		self.restricciones = restricciones
 		self.z = z
 
 	def definirLimites(self, noNegatividad):
-		constantes = [] #arreglo que contiene las constantes
-		self.limitesSup.clear()#limpiar listas
-		self.limitesInf.clear()#limpiar listas
+		#Arreglo que contiene las constantes
+		constantes = [] 
+		#Limpiar listas
+		self.limitesSup.clear()
+		self.limitesInf.clear() 
 
 		for restriccion in self.restricciones:
 			aux = ""
 			constantes = []
-			restriccion = restriccion + "FIN"#se concatena la palabra FIN para recorrer completamente la lista
+			#Se concatena la palabra FIN para recorrer completamente la lista
+			restriccion = restriccion + "FIN"
 
 			for letra in restriccion:
-				if(letra == "." or letra.isdigit() or letra == "-"):#al encontrar estos carcateres suponemos que se trata de un numero
-					aux = aux + letra#concatenamos los caracteres permitidos
+				#Al encontrar estos caracteres suponemos que se trata de un numero
+				if(letra == "." or letra.isdigit() or letra == "-"):
+					#Concatenamos los caracteres permitidos
+					aux = aux + letra
 				elif(aux != ""):
-					constantes.append(aux)#se guarda la constante
-					aux = ""#limpiar variable
+					#Se guarda la constante
+					constantes.append(aux)
+					aux = ""
 
 			self.totalVariables = len(constantes) - 1
 			for i in range(len(self.limitesSup), self.totalVariables):
-				self.limitesSup.append(0)#se inicializan las listas con 0
+				#Se inicializan las listas con 0
+				self.limitesSup.append(0)
 				self.limitesInf.append(0)
 
-			for i in range(0, self.totalVariables):#despeje de las ecuaciones
+			#Despeje de las ecuaciones
+			for i in range(0, self.totalVariables):
 				aux2 = 0
 				if(float(constantes[i]) != 0.0):
 					aux2 = float(constantes[len(constantes) - 1]) / float(constantes[i])
@@ -61,7 +69,7 @@ class PoblacionTotal:
 
 	def calcular(self):
 		print ("Calculando..")
-		#limpiar variables
+		#Limpiar variables
 		self.zMaxP.clear()
 		self.puntosMaxP.clear()
 		self.zMinP.clear()
@@ -69,9 +77,7 @@ class PoblacionTotal:
 		self.puntosMaxG.clear()
 		self.puntosMinG.clear()
 
-		"""
-		Implementacion de las iteraciones
-		"""
+		#Implementacion de las iteraciones
 		for i in range(0, self.numPoblaciones):
 			bandera = True
 			puntosMax = []
@@ -81,7 +87,7 @@ class PoblacionTotal:
 			zAux = 0.0
 
 			for x in range(0, self.totalPoblacion):
-				#Se genera un solo pobador, se limpia y se vuelve a ocupar para optimizacion del procesamiento
+				#Se genera un solo poblador, se limpia y se vuelve a ocupar para optimizacion del procesamiento
 				#Se determina si cumple o no con las restricciones
 				poblador1 = Poblador(self.restricciones, self.z, self.limitesInf, self.limitesSup)
 				zAux = poblador1.getZ()
@@ -105,6 +111,7 @@ class PoblacionTotal:
 					puntosMin = poblador1.getCeros()
 				zAux = 0.0
 
+			#Se obtienen los mejores resultados de todo las poblaciones
 			if(zMax > self.zMaxG):
 				self.zMaxG = zMax
 				self.puntosMaxG = puntosMax
@@ -113,12 +120,14 @@ class PoblacionTotal:
 				self.zMinG = zMin
 				self.puntosMinG = puntosMin
 
+			#Se van guardando los resultados de las poblaciones
 			self.zMaxP.append(zMax)
 			self.zMinP.append(zMin)
 			self.puntosMaxP.append(puntosMax)
 			self.puntosMinP.append(puntosMin)
 
-	def getLimitesJSON(self):#retorna los limites
+	#Retorna los limites como JSON
+	def getLimitesJSON(self):
 		limJSON = {
 					"totalVariables": str(self.totalVariables), 
 					"limitesSup": self.limitesSup, 
@@ -126,7 +135,8 @@ class PoblacionTotal:
 		}
 		return json.dumps(limJSON)
 
-	def getResultadosPoblacionJSON(self):#retorna todos los resultados
+	#Retorna todos los resultados como JSON
+	def getResultadosPoblacionJSON(self):
 		resultadosPoblacionJSON = {
 									"zMax": self.zMaxP,
 									"puntosMax": self.puntosMaxP,
@@ -135,7 +145,8 @@ class PoblacionTotal:
 		}
 		return json.dumps(resultadosPoblacionJSON)
 
-	def getMejoresResultadosJSON(self):#retorna los mejores resultados
+	#Retorna los mejores resultados como JSON
+	def getMejoresResultadosJSON(self):
 		mejoresResultadosJSON = {
 							"zMaxG": self.zMaxG,
 							"puntosMaxG": self.puntosMaxG,

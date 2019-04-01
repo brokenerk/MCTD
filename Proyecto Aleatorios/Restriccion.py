@@ -2,7 +2,7 @@
 class Restriccion:
 
 	def __init__(self, expresion, aleatorios):
-		#Inicilizacion de valores
+		#Inicializacion de valores
 		self.expresion = expresion + "FIN"
 		self.constantes = []
 		self.aleatorios = aleatorios
@@ -15,14 +15,15 @@ class Restriccion:
 	def separar(self):
 		aux = ""
 		i = 0
-		for letra in self.expresion:#Recuperacion de las constantes de la restriccion
+		#Recuperacion de las constantes de la restriccion
+		for letra in self.expresion:
 			if(letra == "." or letra.isdigit() or letra == "-"):
 				aux = aux + letra
 			elif(aux != ""):
 				self.constantes[i] = aux
 				i = i + 1
 				aux = ""
-
+				
 			#Identificacion del sentido de desigualdad o igualdad
 			if(letra == ">"):
 				self.desigualdad = 0
@@ -36,14 +37,15 @@ class Restriccion:
 				else:
 					self.desigualdad = 4
 
-	def getConstantes(self):#Obtener constantes
+	#Obtener constantes
+	def getConstantes(self):
 		return self.constantes
 
-	def getExpresion(self):#Obtner la expresion de la restriccion
+	#Obtener la expresion de la restriccion
+	def getExpresion(self):
 		return self.expresion
 
 	def evaluar(self):
-
 		#Evaluacion de las restricciones
 		self.separar()
 		valor = 0;
@@ -65,19 +67,20 @@ class Restriccion:
 		self.valor = valor
 		return valor
 
-	def mayor(self,valor):#Evaluacion de la desigualdad
+	#Evaluacion de las desigualdades
+	def mayor(self,valor):
 		if(valor > float(self.constantes[len(self.constantes) - 1])):
 			return 1
 		else:
 			return 0
 
-	def menor(self, valor):#Evaluacion de la desigualdad
+	def menor(self, valor):
 		if(valor < float(self.constantes[len(self.constantes) - 1])):
 			return 1
 		else:
 			return 0
 	
-	def mayorIgual(self, valor):#Evaluacion de la desigualdad
+	def mayorIgual(self, valor):
 		aux = self.constantes[len(self.constantes) - 1]
 		if(valor > float(self.constantes[len(self.constantes) - 1])):
 			return 1
@@ -86,13 +89,14 @@ class Restriccion:
 		else:
 			return 0
 
-	def menorIgual(self, valor):#Evaluacion de la desigualdad
+	def menorIgual(self, valor):
 		if(valor <= float(self.constantes[len(self.constantes) - 1])):
 			return 1
 		else:
 			return 0
 
-	def igual(self, valor):#Evaluacion de la igualdad
+	#Evaluacion de la igualdad	
+	def igual(self, valor):	
 		aux = self.constantes[len(self.constantes) - 1]
 		if(str(valor) == aux):
 			return 1
