@@ -3,48 +3,49 @@ from Poblador import Poblador
 import json
 
 class PoblacionTotal:
-	limitesSup = []
-	limitesInf = []
-	restricciones = []
-	totalVariables = 0
+	limitesSup = []#lista de limites superiores
+	limitesInf = []#lista de limites inferiores
+	restricciones = []#lista de las restricciones
+	totalVariables = 0#numero total de restricciones
 	zMaxG = 0.0
 	zMinG = 1000000000000000000
 	puntosMaxG = []
 	puntosMinG = []
-	zMaxP = []
-	zMinP = []
-	puntosMaxP = []
-	puntosMinP = []
+	zMaxP = []#valores maximos de Z
+	zMinP = []#valores minimos de Z
+	puntosMaxP = [] #puntos de soluccion maxima
+	puntosMinP = [] #puntos de solucion minimos
 
 	def __init__(self, totalPoblacion, numPoblaciones, restricciones, z):
+		#inicializacion de varaibles
 		self.totalPoblacion = totalPoblacion
 		self.numPoblaciones = numPoblaciones
 		self.restricciones = restricciones
 		self.z = z
 
 	def definirLimites(self, noNegatividad):
-		constantes = []
-		self.limitesSup.clear()
-		self.limitesInf.clear()
+		constantes = [] #arreglo que contiene las constantes
+		self.limitesSup.clear()#limpiar listas
+		self.limitesInf.clear()#limpiar listas
 
 		for restriccion in self.restricciones:
 			aux = ""
 			constantes = []
-			restriccion = restriccion + "FIN"
+			restriccion = restriccion + "FIN"#se concatena la palabra FIN para recorrer completamente la lista
 
 			for letra in restriccion:
-				if(letra == "." or letra.isdigit() or letra == "-"):
-					aux = aux + letra
+				if(letra == "." or letra.isdigit() or letra == "-"):#al encontrar estos carcateres suponemos que se trata de un numero
+					aux = aux + letra#concatenamos los caracteres permitidos
 				elif(aux != ""):
-					constantes.append(aux)
-					aux = ""
+					constantes.append(aux)#se guarda la constante
+					aux = ""#limpiar variable
 
 			self.totalVariables = len(constantes) - 1
 			for i in range(len(self.limitesSup), self.totalVariables):
-				self.limitesSup.append(0)
+				self.limitesSup.append(0)#se inicializan las listas con 0
 				self.limitesInf.append(0)
 
-			for i in range(0, self.totalVariables):
+			for i in range(0, self.totalVariables):#despeje de las ecuaciones
 				aux2 = 0
 				if(float(constantes[i]) != 0.0):
 					aux2 = float(constantes[len(constantes) - 1]) / float(constantes[i])
@@ -60,6 +61,7 @@ class PoblacionTotal:
 
 	def calcular(self):
 		print ("Calculando..")
+		#limpiar variables
 		self.zMaxP.clear()
 		self.puntosMaxP.clear()
 		self.zMinP.clear()
@@ -67,6 +69,9 @@ class PoblacionTotal:
 		self.puntosMaxG.clear()
 		self.puntosMinG.clear()
 
+		"""
+		Implementacion de las iteraciones
+		"""
 		for i in range(0, self.numPoblaciones):
 			bandera = True
 			puntosMax = []
@@ -76,6 +81,8 @@ class PoblacionTotal:
 			zAux = 0.0
 
 			for x in range(0, self.totalPoblacion):
+				#Se genera un solo pobador, se limpia y se vuelve a ocupar para optimizacion del procesamiento
+				#Se determina si cumple o no con las restricciones
 				poblador1 = Poblador(self.restricciones, self.z, self.limitesInf, self.limitesSup)
 				zAux = poblador1.getZ()
 
@@ -111,7 +118,7 @@ class PoblacionTotal:
 			self.puntosMaxP.append(puntosMax)
 			self.puntosMinP.append(puntosMin)
 
-	def getLimitesJSON(self):
+	def getLimitesJSON(self):#retorna los limites
 		limJSON = {
 					"totalVariables": str(self.totalVariables), 
 					"limitesSup": self.limitesSup, 
@@ -119,7 +126,7 @@ class PoblacionTotal:
 		}
 		return json.dumps(limJSON)
 
-	def getResultadosPoblacionJSON(self):
+	def getResultadosPoblacionJSON(self):#retorna todos los resultados
 		resultadosPoblacionJSON = {
 									"zMax": self.zMaxP,
 									"puntosMax": self.puntosMaxP,
@@ -128,7 +135,7 @@ class PoblacionTotal:
 		}
 		return json.dumps(resultadosPoblacionJSON)
 
-	def getMejoresResultadosJSON(self):
+	def getMejoresResultadosJSON(self):#retorna los mejores resultados
 		mejoresResultadosJSON = {
 							"zMaxG": self.zMaxG,
 							"puntosMaxG": self.puntosMaxG,
