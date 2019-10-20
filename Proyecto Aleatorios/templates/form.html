@@ -33,11 +33,11 @@
                <form action = "http://localhost:5000/mctd_resultados" method = "POST" id = "formulario">
                   <div class = "col s4 m2 offset-m3 input-field">
                      <label for = "tamPoblacion">Tama&ntilde;o Población</label>
-                     <input type = "text" id = "tamPoblacion" name = "tamPoblacion" data-validetta="required,number"/></p>
+                     <input type = "text" id = "tamPoblacion" name = "tamPoblacion" data-validetta="required,maxLength[5],number"/></p>
                   </div>
                   <div class = "col s4 m2 input-field">
                      <label for = "numPoblaciones"># Poblaciones</label>
-                     <input type = "text" id = "numPoblaciones" name = "numPoblaciones" data-validetta="required,number"/></p>
+                     <input type = "text" id = "numPoblaciones" name = "numPoblaciones" data-validetta="required,number,maxLength[2]"/></p>
                   </div>
 
                   <div class = "col s4 m2 input-field">
