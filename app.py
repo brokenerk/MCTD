@@ -19,7 +19,7 @@ app = Flask(__name__)
 #Creamos el template del formulario para ingresar datos al cargar el servidor
 @app.route('/')
 def crear():
-   return render_template('form.html', urlRoot=urlRoot)
+   return render_template('form.html', urlRoot=url)
 
 #Obtiene los datos del form por medio de POST
 @app.route("/mctd_resultados", methods = ["POST"])
@@ -58,7 +58,7 @@ def resultado():
 	mejoresResultadosJSON = p.getMejoresResultadosJSON()
 
 	#Enviamos los JSON al html de resultados apoyandonos de javascript
-	return render_template("results.html", ppl = json.dumps(pplJSON), limites = limitesJSON, resultadosPoblacion = resultadosPoblacionJSON, mejoresResultados = mejoresResultadosJSON, urlRoot=urlRoot)
+	return render_template("results.html", ppl = json.dumps(pplJSON), limites = limitesJSON, resultadosPoblacion = resultadosPoblacionJSON, mejoresResultados = mejoresResultadosJSON, urlRoot=url)
 
 #Main
 if __name__ == "__main__":
