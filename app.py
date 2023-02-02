@@ -4,13 +4,22 @@ from PoblacionTotal import PoblacionTotal
 from flask import Flask, render_template, request #Libreria para usar python en web
 import json #Libreria para usar JSON
 
+# Variables de entorno
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+url = os.getenv("URL")
+port = os.getenv("PORT")
+urlRoot = url + ":" + port
+
 #Indicamos que es una aplicacion Flask - PythonWEB
 app = Flask(__name__)
 
 #Creamos el template del formulario para ingresar datos al cargar el servidor
 @app.route('/')
 def crear():
-   return render_template('form.html')
+   return render_template('form.html', urlRoot=urlRoot)
 
 #Obtiene los datos del form por medio de POST
 @app.route("/mctd_resultados", methods = ["POST"])
@@ -49,8 +58,8 @@ def resultado():
 	mejoresResultadosJSON = p.getMejoresResultadosJSON()
 
 	#Enviamos los JSON al html de resultados apoyandonos de javascript
-	return render_template("results.html", ppl = json.dumps(pplJSON), limites = limitesJSON, resultadosPoblacion = resultadosPoblacionJSON, mejoresResultados = mejoresResultadosJSON)
+	return render_template("results.html", ppl = json.dumps(pplJSON), limites = limitesJSON, resultadosPoblacion = resultadosPoblacionJSON, mejoresResultados = mejoresResultadosJSON, urlRoot=urlRoot)
 
 #Main
 if __name__ == "__main__":
-	app.run(host="0.0.0.0", debug=True, port=5011)
+	app.run(host="0.0.0.0", debug=True, port=port)
